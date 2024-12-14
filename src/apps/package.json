@@ -1,0 +1,31 @@
+{
+    "name": "quizu-frontend",
+    "private": true,
+    "workspaces": [
+        "apps/web",
+        "apps/native",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "npm run dev --workspace apps/web && npm run dev --workspace apps/native",
+        "build": "npm run build --workspace apps/web && npm run build --workspace apps/native",
+        "start": "npm run start --workspace apps/web && npm run start --workspace apps/native",
+        "lint": "npm run lint --workspace apps/web && npm run lint --workspace apps/native"
+    },
+    "dependencies": {
+        "@quizu-sevastianbahynskyi/quizu-schema": "npm:@QuizU-SevastianBahynskyi/quizu-schema@^0.1.9",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-native-web": "^0.19.13"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "^15.1.0",
+        "postcss": "^8",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5.3.3"
+    }
+}
