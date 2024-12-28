@@ -1,16 +1,14 @@
 import "../../../globals.css";
 import "./Button.css";
 
-type ButtonProps = {
-  onClick?: () => void;
-  value: string;
-};
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ onClick, value }: ButtonProps) => {
+const Button = ({ className, onClick, value, ...rest}: ButtonProps) => {
   return (
     <button
-      className="w-full p-2 bg-black/60 text-cyan-300 font-bold text-lg rounded button-hover-effect select-none"
+      className={`btn text-secondary w-full p-2 bg-black/60 font-bold text-lg rounded button-hover-effect select-none ${className || ""}`}
       onClick={onClick}
+      {...rest}
     >
       {value}
     </button>

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import "../../../globals.css";
-import { TextField } from "../TextField/TextField";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { TextField, TextFieldProps } from "../TextField/TextField";
 
-const PasswordField = () => {
+const PasswordField = ({ className, ...rest }: TextFieldProps) => {
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
 
@@ -11,26 +10,47 @@ const PasswordField = () => {
     setPasswordVisibility((prevState) => !prevState);
   };
 
-  const Icon = isPasswordVisible ? VscEyeClosed : VscEye;
+  return (
+    <TextField
+      type={isPasswordVisible ? "text" : "password"}
+      className={className}
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      placeholder="Password"
+      {...rest}
+    >
+      <ShowPasswordIcon
+        isPasswordVisible={isPasswordVisible}
+        togglePasswordVisibility={togglePasswordVisibility}
+      />
+    </TextField>
+  );
+};
+
+const ShowPasswordIcon = ({
+  isPasswordVisible,
+  togglePasswordVisibility,
+}: {
+  isPasswordVisible: boolean;
+  togglePasswordVisibility: () => void;
+}) => {
+  const iconClassName =
+    "w-8 h-8 p-1 transition-opacity duration-500 ease-in-out cursor-pointer";
 
   return (
-    <div className="relative w-full h-fit">
-      <TextField
-        id="password-input"
-        type={isPasswordVisible ? "text" : "password"}
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        autoComplete="current-password"
-        className="relative"
-      />
-
-      <div
-        className="absolute right-3 flex items-center cursor-pointer p-0"
+    <div className="relative w-8 h-8 text-gray-300 hover:text-primary">
+      <VscEye
+        className={`${iconClassName} absolute ${
+          isPasswordVisible ? "opacity-0" : "opacity-100"
+        }`}
         onClick={togglePasswordVisibility}
-      >
-        <Icon className="w-5 h-5 p-0 text-gray-500" />
-      </div>
+      />
+      <VscEyeClosed
+        className={`${iconClassName} absolute ${
+          isPasswordVisible ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={togglePasswordVisibility}
+      />
     </div>
   );
 };

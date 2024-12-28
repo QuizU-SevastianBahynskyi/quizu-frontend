@@ -18,4 +18,13 @@ export default {
   plugins: [
     daisyui
   ],
+  daisyui: {
+    themes: [
+      "light",
+      "nord",
+      "dark",
+      "forest",
+      "dracula"
+    ]
+  }
 } satisfies Config;
