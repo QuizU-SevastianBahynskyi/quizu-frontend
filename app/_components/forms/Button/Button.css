@@ -1,0 +1,64 @@
+:root {
+  --hover-effect-duration: 1.4s;
+  --hover-effect-blur: 15px;
+  --hover-effect-color-start: rgba(255, 255, 255, 0.5);
+  --hover-effect-color-end: rgba(255, 255, 255, 0.1);
+  --hover-effect-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.25);
+  --hover-effect-shadow-hover: 0 6px 14px rgba(0, 0, 0, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.3);
+  --hover-effect-rotation: 45deg;
+  --hover-effect-offset: 100%;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(calc(-1 * var(--hover-effect-offset)))
+      rotate(var(--hover-effect-rotation));
+  }
+  100% {
+    transform: translateX(var(--hover-effect-offset))
+      rotate(var(--hover-effect-rotation));
+  }
+}
+
+.button-hover-effect {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  border-radius: 8px;
+}
+
+.button-hover-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--hover-effect-offset) * 2);
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    var(--hover-effect-color-start),
+    var(--hover-effect-color-end)
+  );
+  transform: translateX(calc(-1 * var(--hover-effect-offset)))
+    rotate(var(--hover-effect-rotation));
+  transition: transform var(--hover-effect-duration) ease-in-out;
+  filter: blur(var(--hover-effect-blur));
+  box-shadow: var(--hover-effect-shadow);
+  z-index: 1;
+}
+
+.button-hover-effect:hover::before {
+  transform: translateX(var(--hover-effect-offset))
+    rotate(var(--hover-effect-rotation));
+}
+
+.button-hover-effect:hover {
+  box-shadow: var(--hover-effect-shadow-hover);
+}
+
+.button-hover-effect > * {
+  position: relative;
+  z-index: 2;
+}

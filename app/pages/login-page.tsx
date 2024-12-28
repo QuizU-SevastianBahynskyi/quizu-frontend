@@ -5,7 +5,7 @@ import {
   SquaredLayout,
   SquaredLayoutProps,
 } from "@sevastian-bahynskyi/squared-layout";
-import AuthenticationCard from "../_components/AuthenticationCard/AuthenticationCard";
+import AuthenticationForm from "../_components/AuthenticationForm/AuthenticationForm";
 
 const LoginPage: React.FC = () => {
   const backgroundLayoutConfig: SquaredLayoutProps = {
@@ -13,21 +13,21 @@ const LoginPage: React.FC = () => {
       color: "black",
       width: 2,
     },
-    paintedSquareRatio: 7,
+    paintedSquareRatio: 10,
     square: {
       changeToDefaultColorInterval: {
         from: 1500,
-        to: 3500,
+        to: 4500,
       },
       changeTransition: "1.5s ease-in-out",
-      defaultColor: "#283618",
+      defaultColor: "rgba(129, 0, 217, 0.57)",
     },
   };
 
   return (
     <>
         <SquaredLayout {...backgroundLayoutConfig}/>
-        <AuthenticationCard />
+        <AuthenticationForm />
     </>
   );
 };
