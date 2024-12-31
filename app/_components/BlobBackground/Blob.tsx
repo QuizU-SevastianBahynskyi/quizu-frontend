@@ -1,11 +1,7 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 
 interface BlobProps {
-  canvasWidth: number;
-  canvasHeight: number;
-  showGuides?: boolean;
-  frameSpeed?: number;
   xPosition?: number;
   yPosition?: number;
   size?: number;
@@ -17,10 +13,14 @@ interface BlobProps {
   color?: string;
   backgroundColor?: string;
   className?: string;
+  showGuides?: boolean;
 }
 
 const useFrameLoop = () => {
-  const speed = 0.1;
+  const speed = 1;
+  const frameRate = 60;
+  const frameDuration = 1000 / frameRate;
+
   const [frame, setFrame] = useState(0);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const useFrameLoop = () => {
     const loop = (currentTime: number) => {
       const deltaTime = currentTime - lastTime;
 
-      if (deltaTime >= 1000 / 120) {
+      if (deltaTime >= frameDuration) {
         setFrame((prevFrame) => prevFrame + speed);
         lastTime = currentTime;
       }
@@ -43,27 +43,26 @@ const useFrameLoop = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [speed]);
+  }, [speed, frameDuration]);
 
   return frame;
 };
 
 const Blob: React.FC<BlobProps> = ({
-  canvasWidth = window.innerWidth,
-  canvasHeight = window.innerHeight,
-  showGuides = false,
-  xPosition = canvasWidth / 2,
-  yPosition = canvasHeight / 2,
+  xPosition = window.innerWidth / 2,
+  yPosition = window.innerHeight / 2,
   size = 50,
   amplitude = 0.2,
   numPoints = 4,
-  speed = 0.5,
+  speed = 1,
   period = Math.PI * 2,
   rotationSpeed = 0.5,
-  color = '#ffffff',
-  backgroundColor = '#000000',
-  className = '',
+  color = "#ffffff",
+  backgroundColor = "transparent",
+  className = "",
+  showGuides = false,
 }) => {
+  speed = speed / 10;
   const frame = useFrameLoop();
 
   const controlPointDist = (4 / 3) * Math.tan(Math.PI / (numPoints * 2));
@@ -85,7 +84,6 @@ const Blob: React.FC<BlobProps> = ({
         },
       ],
     },
-    // ... Add the rest of the points (same as in your existing logic)
     {
       x: 0,
       y: 1 + Math.sin(time + (period / 12) * 3) * amplitude,
@@ -131,20 +129,19 @@ const Blob: React.FC<BlobProps> = ({
   ];
 
   return (
-    <svg width={canvasWidth} height={canvasHeight}>
-      {backgroundColor && (
-        <rect
-          x={xPosition - canvasWidth / 2}
-          y={yPosition- canvasHeight / 2}
-          width={ canvasWidth }
-          height={canvasHeight }
-          fill={backgroundColor}
-        />
-      )}
+    <svg
+      width={size}
+      height={size}
+      style={{
+        overflow: "visible",
+        backgroundColor,
+        position: 'absolute',
+        left: xPosition,
+        top: yPosition,
+      }}
+    >
       <g
-        transform={`translate(${xPosition} ${
-          yPosition
-        }) scale(${size} ${size}) rotate(${rotation})`}
+        transform={`scale(${size / 2}) rotate(${rotation})`}
       >
         <path
           className={className}
@@ -171,7 +168,12 @@ const Blob: React.FC<BlobProps> = ({
                 stroke="#ff0000"
                 strokeWidth="0.02"
               />
-              <circle cx={point.controlPoints[0].x} cy={point.controlPoints[0].y} r="0.05" fill="#ff0000" />
+              <circle
+                cx={point.controlPoints[0].x}
+                cy={point.controlPoints[0].y}
+                r="0.05"
+                fill="#ff0000"
+              />
               {i === 0 && (
                 <>
                   <line
@@ -182,7 +184,12 @@ const Blob: React.FC<BlobProps> = ({
                     stroke="#0000ff"
                     strokeWidth="0.02"
                   />
-                  <circle cx={point.controlPoints[1].x} cy={point.controlPoints[1].y} r="0.05" fill="#0000ff" />
+                  <circle
+                    cx={point.controlPoints[1].x}
+                    cy={point.controlPoints[1].y}
+                    r="0.05"
+                    fill="#0000ff"
+                  />
                 </>
               )}
               <circle cx={point.x} cy={point.y} r="0.05" fill="#ff0000" />
